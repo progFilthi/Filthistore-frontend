@@ -1,5 +1,5 @@
 import React from "react";
-import BeatCard from "../beat-card";
+import BeatCard from "../BeatCard";
 
 export default function BeatsSection() {
   return (
