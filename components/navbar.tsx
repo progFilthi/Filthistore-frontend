@@ -1,4 +1,5 @@
-import { useId } from "react";
+"use client";
+
 import { SearchIcon, ShoppingBag } from "lucide-react";
 
 import Logo from "@/components/navbar-components/logo";
@@ -16,6 +17,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ModeToggle } from "./mode-toggle";
+import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import UserBtn from "./user-btn";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -26,8 +30,7 @@ const navigationLinks = [
 ];
 
 export default function Navbar() {
-  const id = useId();
-
+  const { data } = authClient.useSession();
   return (
     <header className="border-b px-4 md:px-6">
       <div className="flex h-16 items-center justify-between gap-4">
@@ -90,8 +93,8 @@ export default function Navbar() {
                     ></div>
                   </NavigationMenuItem>
                   <NavigationMenuItem className="w-full">
-                    <NavigationMenuLink href="#" className="py-1.5">
-                      Sign In
+                    <NavigationMenuLink href="Login" className="py-1.5">
+                      Login
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem className="w-full py-2 mx-1">
@@ -136,7 +139,6 @@ export default function Navbar() {
             {/* Search form */}
             <div className="relative">
               <Input
-                id={id}
                 className="peer h-8 ps-8 pe-2"
                 placeholder="Search..."
                 type="search"
@@ -149,9 +151,13 @@ export default function Navbar() {
         </div>
         {/* Right side */}
         <div className="flex items-center gap-2 max-md:hidden">
-          <Button asChild variant="ghost" size="sm" className="text-sm">
-            <a href="#">Sign In</a>
-          </Button>
+          {data?.session ? (
+            <UserBtn />
+          ) : (
+            <Button asChild variant="ghost" size="sm" className="text-sm">
+              <Link href="login">Login</Link>
+            </Button>
+          )}
           <ModeToggle />
           <Button asChild size="sm" className="text-sm">
             <a href="#">
