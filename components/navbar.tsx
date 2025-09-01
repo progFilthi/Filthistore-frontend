@@ -23,7 +23,7 @@ import UserBtn from "./user-btn";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "#", label: "Beats" },
+  { href: "/beats", label: "Beats" },
   { href: "#", label: "Drum kits" },
   { href: "#", label: "Loop kits" },
   { href: "#", label: "Deals" },
@@ -32,7 +32,7 @@ const navigationLinks = [
 export default function Navbar() {
   const { data } = authClient.useSession();
   return (
-    <header className="border-b px-4 md:px-6">
+    <header className="border-b px-4 md:px-6 fixed top-0 left-0 right-0 mx-auto backdrop-blur-md">
       <div className="flex h-16 items-center justify-between gap-4">
         {/* Left side */}
         <div className="flex flex-1 items-center gap-2">
@@ -92,19 +92,16 @@ export default function Navbar() {
                       className="bg-border -mx-1 my-1 h-px"
                     ></div>
                   </NavigationMenuItem>
-                  <NavigationMenuItem className="w-full">
-                    <NavigationMenuLink href="Login" className="py-1.5">
+                  {/* <NavigationMenuItem className="w-full">
+                    <NavigationMenuLink href="Login" className="my-2">
                       Login
                     </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem className="w-full py-2 mx-1">
-                    <ModeToggle />
-                  </NavigationMenuItem>
+                  </NavigationMenuItem> */}
                   <NavigationMenuItem className="w-full">
                     <Button
                       asChild
                       size="sm"
-                      className="mt-0.5 w-full text-left text-sm"
+                      className="my-2.5 w-full text-left text-sm"
                     >
                       <span className="flex items-center gap-2">
                         Cart
