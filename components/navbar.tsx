@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchIcon, ShoppingBag } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 
 import Logo from "@/components/navbar-components/logo";
 import { Button } from "@/components/ui/button";
@@ -97,7 +97,7 @@ export default function Navbar() {
                       Login
                     </NavigationMenuLink>
                   </NavigationMenuItem> */}
-                  <NavigationMenuItem className="w-full">
+                  {/* <NavigationMenuItem className="w-full">
                     <Button
                       asChild
                       size="sm"
@@ -108,7 +108,7 @@ export default function Navbar() {
                         <ShoppingBag />
                       </span>
                     </Button>
-                  </NavigationMenuItem>
+                  </NavigationMenuItem> */}
                 </NavigationMenuList>
               </NavigationMenu>
             </PopoverContent>
@@ -156,14 +156,14 @@ export default function Navbar() {
             </Button>
           )}
           <ModeToggle />
-          <Button asChild size="sm" className="text-sm">
+          {/* <Button asChild size="sm" className="text-sm">
             <a href="#">
               <span className="flex items-center gap-2">
                 Cart
                 <ShoppingBag />
               </span>
             </a>
-          </Button>
+          </Button> */}
         </div>
       </div>
     </header>
