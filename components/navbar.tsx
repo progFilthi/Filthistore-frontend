@@ -133,6 +133,12 @@ export default function Navbar() {
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
+            {/* Admin route */}
+            {
+              <Link href={"/admin"}>
+                <Button>Admin</Button>
+              </Link>
+            }
             {/* Search form */}
             <div className="relative">
               <Input
