@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import BeatLicenseModal from "./BeatLicenseModal";
+import { Play, Pause } from "lucide-react";
 
 interface BeatProps {
   id: number;
@@ -13,6 +14,7 @@ interface BeatProps {
   bpm: number;
   key: string;
   price: number;
+  audio?: string; // path to audio file
 }
 
 const BeatData: BeatProps[] = [
@@ -23,89 +25,131 @@ const BeatData: BeatProps[] = [
     bpm: 142,
     key: "F#m",
     price: 24.99,
+    audio: "/Blictionary 147 gm @prodbyfilthi.mp3",
   },
   {
     id: 2,
     image: "/young-producer.png",
-    title: "808 Madness",
-    bpm: 130,
-    key: "Am",
+    title: "Trap Galaxy",
+    bpm: 142,
+    key: "F#m",
     price: 24.99,
+    audio: "/Blictionary 147 gm @prodbyfilthi.mp3",
   },
   {
     id: 3,
     image: "/young-producer.png",
-    title: "808 Madness",
-    bpm: 130,
-    key: "Am",
+    title: "Trap Galaxy",
+    bpm: 142,
+    key: "F#m",
     price: 24.99,
+    audio: "/Blictionary 147 gm @prodbyfilthi.mp3",
   },
   {
     id: 4,
     image: "/young-producer.png",
-    title: "808 Madness",
-    bpm: 130,
-    key: "Am",
+    title: "Trap Galaxy",
+    bpm: 142,
+    key: "F#m",
     price: 24.99,
+    audio: "/Blictionary 147 gm @prodbyfilthi.mp3",
   },
   {
     id: 5,
     image: "/young-producer.png",
-    title: "808 Madness",
-    bpm: 130,
-    key: "Am",
+    title: "Trap Galaxy",
+    bpm: 142,
+    key: "F#m",
     price: 24.99,
+    audio: "/Blictionary 147 gm @prodbyfilthi.mp3",
   },
   {
     id: 6,
     image: "/young-producer.png",
-    title: "808 Madness",
-    bpm: 130,
-    key: "Am",
+    title: "Trap Galaxy",
+    bpm: 142,
+    key: "F#m",
     price: 24.99,
+    audio: "/Blictionary 147 gm @prodbyfilthi.mp3",
   },
   {
     id: 7,
     image: "/young-producer.png",
-    title: "808 Madness",
-    bpm: 130,
-    key: "Am",
+    title: "Trap Galaxy",
+    bpm: 142,
+    key: "F#m",
     price: 24.99,
+    audio: "/Blictionary 147 gm @prodbyfilthi.mp3",
   },
   {
     id: 8,
     image: "/young-producer.png",
-    title: "808 Madness",
-    bpm: 130,
-    key: "Am",
+    title: "Trap Galaxy",
+    bpm: 142,
+    key: "F#m",
     price: 24.99,
+    audio: "/Blictionary 147 gm @prodbyfilthi.mp3",
   },
 ];
 
 export default function BeatCard() {
   const [selectedBeat, setSelectedBeat] = useState<BeatProps | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [hoveredBeatId, setHoveredBeatId] = useState<number | null>(null);
+  const [playingBeatId, setPlayingBeatId] = useState<number | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const handlePlayPause = (beat: BeatProps) => {
+    if (!audioRef.current) return;
+    if (playingBeatId === beat.id) {
+      audioRef.current.pause();
+      setPlayingBeatId(null);
+    } else {
+      audioRef.current.src = beat.audio || "";
+      audioRef.current.play();
+      setPlayingBeatId(beat.id);
+    }
+  };
 
   const handleBuy = (beatId: number, licenseType: string) => {
     console.log("Buying:", { beatId, licenseType });
-    // This is where I will integrate checkout logic (Stripe, DodoPay, etc.)
   };
 
   return (
     <>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-8 gap-8 max-w-7xl mx-auto my-8">
         {BeatData.map((beat) => (
-          <Card key={beat.id}>
-            <CardContent className="flex flex-col space-y-1">
-              <Image
-                src={beat.image}
-                alt="beat-image"
-                width={230}
-                height={230}
-                className="object-cover rounded-md h-48 w-full"
-              />
-              <div className="space-y-1">
-                <h1 className="font-bold mt-1">{beat.title}</h1>
+          <Card
+            key={beat.id}
+            onMouseEnter={() => setHoveredBeatId(beat.id)}
+            onMouseLeave={() => setHoveredBeatId(null)}
+          >
+            <CardContent className="flex flex-col space-y-1 relative">
+              <div className="relative h-48 w-full rounded-md overflow-hidden">
+                <Image
+                  src={beat.image}
+                  alt="beat-image"
+                  fill
+                  className="object-cover"
+                />
+
+                {/* Play/Pause icons */}
+                {hoveredBeatId === beat.id && (
+                  <button
+                    onClick={() => handlePlayPause(beat)}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white p-2 rounded-full bg-black/30 hover:bg-black/50"
+                  >
+                    {playingBeatId === beat.id ? (
+                      <Pause size={32} />
+                    ) : (
+                      <Play size={32} />
+                    )}
+                  </button>
+                )}
+              </div>
+
+              <div className="space-y-1 mt-2">
+                <h1 className="font-bold">{beat.title}</h1>
                 <div className="text-muted-foreground">
                   <p>
                     <span>BPM:</span> {beat.bpm}
@@ -130,6 +174,8 @@ export default function BeatCard() {
           </Card>
         ))}
       </div>
+
+      <audio ref={audioRef} onEnded={() => setPlayingBeatId(null)} />
 
       <BeatLicenseModal
         open={modalOpen}
