@@ -134,11 +134,13 @@ export default function Navbar() {
               </NavigationMenuList>
             </NavigationMenu>
             {/* Admin route */}
-            {
+            {data?.session ? (
               <Link href={"/admin"}>
-                <Button>Admin</Button>
+                <Button size={"sm"}>Admin</Button>
               </Link>
-            }
+            ) : (
+              <Button className="hidden">hidden btn</Button>
+            )}
             {/* Search form */}
             <div className="relative">
               <Input
