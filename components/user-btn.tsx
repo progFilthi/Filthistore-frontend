@@ -1,13 +1,10 @@
 "use client";
 
-import { ChevronDownIcon } from "lucide-react";
-
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  // DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -18,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 // import Link from "next/link";
 import Image from "next/image";
+import { LogOut } from "lucide-react";
 
 export default function UserBtn() {
   //getting logged in user
@@ -53,11 +51,6 @@ export default function UserBtn() {
               className="object-cover"
             />
           </Avatar>
-          <ChevronDownIcon
-            size={16}
-            className="opacity-60"
-            aria-hidden="true"
-          />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="max-w-64">
@@ -70,16 +63,9 @@ export default function UserBtn() {
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {/* <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Link href={"/beats"}>Browse beats</Link>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator /> */}
-        <DropdownMenuItem>
-          <Button onClick={handleLogOut} className="w-full">
-            Logout
-          </Button>
+        <DropdownMenuItem onClick={handleLogOut}>
+          <LogOut />
+          Logout
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
