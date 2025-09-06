@@ -32,40 +32,35 @@ import Image from "next/image";
 import Link from "next/link";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/dashboard",
       icon: IconDashboard,
     },
     {
       title: "Upload",
-      url: "#",
+      url: "/dashboard/upload",
       icon: IconUpload,
     },
     {
       title: "Beats",
-      url: "#",
+      url: "/dashboard/beats",
       icon: IconMusic,
     },
     {
       title: "Drum kits",
-      url: "#",
+      url: "/dashboard/drum-kits",
       icon: IconDisc,
     },
     {
       title: "Loop kits",
-      url: "#",
+      url: "/dashboard/loop-kits",
       icon: IconBox,
     },
     {
       title: "Analytics",
-      url: "#",
+      url: "/dashboard/analytics",
       icon: IconChartBar,
     },
   ],
@@ -120,7 +115,7 @@ const data = {
   navSecondary: [
     {
       title: "Settings",
-      url: "#",
+      url: "/dashboard/settings",
       icon: IconSettings,
     },
     {
@@ -168,7 +163,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );

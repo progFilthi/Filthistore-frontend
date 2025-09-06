@@ -10,33 +10,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-// import Link from "next/link";
 import Image from "next/image";
 import { LogOut } from "lucide-react";
+import { useLogOut } from "@/hooks/use-logOut";
+import { useUserSession } from "@/hooks/use-session";
 
 export default function UserBtn() {
-  //getting logged in user
-  const { data } = authClient.useSession();
+  //this is using a custom hook for logging out
+  const session = useUserSession();
+  const user = session?.user;
 
-  const router = useRouter();
-
-  const handleLogOut = async () => {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          toast.success("Logged out successfully");
-          router.push("/");
-        },
-        onError: (error) => {
-          toast.error("Error trying to log out");
-          console.error("Error trying to log out", error);
-        },
-      },
-    });
-  };
+  //this is using a custom hook for logging out
+  const handleLogOut = useLogOut();
 
   return (
     <DropdownMenu>
@@ -46,7 +31,7 @@ export default function UserBtn() {
             <Image
               width={32}
               height={32}
-              src={data?.user.image || ""}
+              src={user?.image || "avatar.png"}
               alt="Profile image"
               className="object-cover"
             />
@@ -56,10 +41,10 @@ export default function UserBtn() {
       <DropdownMenuContent className="max-w-64">
         <DropdownMenuLabel className="flex min-w-0 flex-col">
           <span className="text-foreground truncate text-sm font-medium">
-            {data?.user.name}
+            {user?.name}
           </span>
           <span className="text-muted-foreground truncate text-xs font-normal">
-            {data?.user.email}
+            {user?.email}
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

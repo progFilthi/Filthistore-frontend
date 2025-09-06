@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/popover";
 import { ModeToggle } from "./mode-toggle";
 import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
 import UserBtn from "./user-btn";
+import { useUserSession } from "@/hooks/use-session";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -30,7 +30,8 @@ const navigationLinks = [
 ];
 
 export default function Navbar() {
-  const { data } = authClient.useSession();
+  const user = useUserSession();
+  const session = user;
   return (
     <header className="border-b px-4 md:px-6 fixed top-0 left-0 right-0 mx-auto backdrop-blur-md z-50">
       <div className="flex h-16 items-center justify-between gap-4">
@@ -138,8 +139,8 @@ export default function Navbar() {
           </div>
         </div>
         {/* Right side */}
-        <div className="flex items-center gap-8 max-md:hidden">
-          {data?.session ? (
+        <div className="flex items-center gap-4 max-md:hidden">
+          {session?.session ? (
             <UserBtn />
           ) : (
             <Button asChild variant="ghost" size="sm" className="text-sm">
@@ -147,14 +148,6 @@ export default function Navbar() {
             </Button>
           )}
           <ModeToggle />
-          {/* <Button asChild size="sm" className="text-sm">
-            <a href="#">
-              <span className="flex items-center gap-2">
-                Cart
-                <ShoppingBag />
-              </span>
-            </a>
-          </Button> */}
         </div>
       </div>
     </header>
