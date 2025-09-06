@@ -24,9 +24,9 @@ import UserBtn from "./user-btn";
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/beats", label: "Beats" },
-  { href: "#", label: "Drum kits" },
-  { href: "#", label: "Loop kits" },
-  { href: "#", label: "Deals" },
+  { href: "/drum-kits", label: "Drum kits" },
+  { href: "/loop-kits", label: "Loop kits" },
+  { href: "/deals", label: "Deals" },
 ];
 
 export default function Navbar() {
@@ -92,23 +92,11 @@ export default function Navbar() {
                       className="bg-border -mx-1 my-1 h-px"
                     ></div>
                   </NavigationMenuItem>
-                  {/* <NavigationMenuItem className="w-full">
+                  <NavigationMenuItem className="w-full">
                     <NavigationMenuLink href="Login" className="my-2">
                       Login
                     </NavigationMenuLink>
-                  </NavigationMenuItem> */}
-                  {/* <NavigationMenuItem className="w-full">
-                    <Button
-                      asChild
-                      size="sm"
-                      className="my-2.5 w-full text-left text-sm"
-                    >
-                      <span className="flex items-center gap-2">
-                        Cart
-                        <ShoppingBag />
-                      </span>
-                    </Button>
-                  </NavigationMenuItem> */}
+                  </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
             </PopoverContent>
@@ -133,14 +121,9 @@ export default function Navbar() {
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
-            {/* Admin route */}
-            {data?.session ? (
-              <Link href={"/admin"}>
-                <Button size={"sm"}>Admin</Button>
-              </Link>
-            ) : (
-              <Button className="hidden">hidden btn</Button>
-            )}
+            <Link href={"/dashboard"}>
+              <Button variant={"secondary"}>Dashboard</Button>
+            </Link>
             {/* Search form */}
             <div className="relative">
               <Input
@@ -155,7 +138,7 @@ export default function Navbar() {
           </div>
         </div>
         {/* Right side */}
-        <div className="flex items-center gap-2 max-md:hidden">
+        <div className="flex items-center gap-8 max-md:hidden">
           {data?.session ? (
             <UserBtn />
           ) : (
