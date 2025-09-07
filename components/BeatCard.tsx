@@ -152,7 +152,7 @@ export default function BeatCard() {
                 <h1 className="font-bold">{beat.title}</h1>
                 <div className="text-muted-foreground">
                   <p>
-                    <span>BPM:</span> {beat.bpm}
+                    <span>Bpm:</span> {beat.bpm}
                   </p>
                   <p className="text-sm">
                     <span>Key:</span> {beat.key}
