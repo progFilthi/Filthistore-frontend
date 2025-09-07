@@ -11,31 +11,45 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import LicenseOptions from "./LicenseOptions";
+import { toast } from "sonner";
+import { useCart } from "@/lib/cart-store";
+import { licenseTiers } from "@/lib/licenses";
 
 interface Beat {
   id: number;
   title: string;
+  image: string;
 }
 
 interface BeatLicenseModalProps {
   open: boolean;
   onClose: () => void;
   beat: Beat | null;
-  onBuy: (beatId: number, licenseType: string) => void;
 }
 
 export default function BeatLicenseModal({
   open,
   onClose,
   beat,
-  onBuy,
 }: BeatLicenseModalProps) {
   const [selected, setSelected] = useState("basic");
+  const addItem = useCart((s) => s.addItem);
 
   if (!beat) return null;
 
   const handleBuy = () => {
-    onBuy(beat.id, selected);
+    const tier = licenseTiers.find((t) => t.id === selected);
+    if (!tier) return;
+
+    addItem({
+      id: beat.id,
+      title: beat.title,
+      image: beat.image,
+      license: tier.label,
+      price: tier.price,
+    });
+
+    toast.success(`${beat.title} (${tier.label}) added to cart`);
     onClose();
   };
 
@@ -54,7 +68,7 @@ export default function BeatLicenseModal({
 
           <div className="grid gap-2">
             <Button type="button" className="w-full" onClick={handleBuy}>
-              Buy License
+              Add to Cart
             </Button>
             <DialogClose asChild>
               <Button type="button" variant="ghost" className="w-full">

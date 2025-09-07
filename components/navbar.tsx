@@ -1,10 +1,10 @@
 "use client";
 
-import { SearchIcon } from "lucide-react";
+// import { SearchIcon } from "lucide-react";
 
 import Logo from "@/components/navbar-components/logo";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -20,6 +20,7 @@ import { ModeToggle } from "./mode-toggle";
 import Link from "next/link";
 import UserBtn from "./user-btn";
 import { useUserSession } from "@/hooks/use-session";
+import { IconShoppingBagPlus } from "@tabler/icons-react";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -104,9 +105,12 @@ export default function Navbar() {
           </Popover>
           {/* Main nav */}
           <div className="flex flex-1 items-center gap-6 max-md:justify-between">
-            <a href="#" className="text-primary hover:text-primary/90">
+            <Link
+              href="/"
+              className="text-primary hidden md:flex hover:text-primary/90"
+            >
               <Logo />
-            </a>
+            </Link>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
@@ -123,10 +127,18 @@ export default function Navbar() {
               </NavigationMenuList>
             </NavigationMenu>
             <Link href={"/dashboard"}>
-              <Button variant={"secondary"}>Dashboard</Button>
+              <Button size={"sm"} variant={"secondary"}>
+                Dashboard
+              </Button>
+            </Link>
+            <Link href={"/cart"}>
+              <Button size={"sm"}>
+                <IconShoppingBagPlus />
+                Cart
+              </Button>
             </Link>
             {/* Search form */}
-            <div className="relative">
+            {/* <div className="relative">
               <Input
                 className="peer h-8 ps-8 pe-2"
                 placeholder="Search..."
@@ -135,7 +147,7 @@ export default function Navbar() {
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 peer-disabled:opacity-50">
                 <SearchIcon size={16} />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         {/* Right side */}

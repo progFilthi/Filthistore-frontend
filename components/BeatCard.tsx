@@ -21,7 +21,7 @@ const BeatData: BeatProps[] = [
   {
     id: 1,
     image: "/young-producer.png",
-    title: "Trap Galaxy",
+    title: "Mask Off",
     bpm: 142,
     key: "F#m",
     price: 24.99,
@@ -111,9 +111,9 @@ export default function BeatCard() {
     }
   };
 
-  const handleBuy = (beatId: number, licenseType: string) => {
-    console.log("Buying:", { beatId, licenseType });
-  };
+  // const handleBuy = (beatId: number, licenseType: string) => {
+  //   console.log("Buying:", { beatId, licenseType });
+  // };
 
   return (
     <>
@@ -181,7 +181,7 @@ export default function BeatCard() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         beat={selectedBeat}
-        onBuy={handleBuy}
+        // onBuy={handleBuy}
       />
     </>
   );
