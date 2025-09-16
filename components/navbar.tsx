@@ -4,7 +4,6 @@
 
 import Logo from "@/components/navbar-components/logo";
 import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -21,6 +20,8 @@ import Link from "next/link";
 import UserBtn from "./user-btn";
 import { useUserSession } from "@/hooks/use-session";
 import { IconShoppingBagPlus } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -33,6 +34,17 @@ const navigationLinks = [
 export default function Navbar() {
   const user = useUserSession();
   const session = user;
+  const router = useRouter();
+
+  const dashboardAccess = () => {
+    if (!session?.session) {
+      router.push("/");
+      toast.error("Unauthorized, please login");
+    } else {
+      router.push("/dashboard");
+    }
+  };
+
   return (
     <header className="border-b px-4 md:px-6 fixed top-0 left-0 right-0 mx-auto backdrop-blur-md z-50">
       <div className="flex h-16 items-center justify-between gap-4">
@@ -126,28 +138,17 @@ export default function Navbar() {
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
-            <Link href={"/dashboard"}>
-              <Button size={"sm"} variant={"secondary"}>
-                Dashboard
-              </Button>
-            </Link>
+            {/* Redirects to the dashboard page */}
+            <Button onClick={dashboardAccess} size={"sm"} variant={"outline"}>
+              Dashboard
+            </Button>
             <Link href={"/cart"}>
-              <Button size={"sm"}>
+              <Button size={"sm"} className="relative">
                 <IconShoppingBagPlus />
-                Cart
               </Button>
+              {/* shows number of items in the cart */}
+              <span className="absolute top-0 text-orange-300">9</span>
             </Link>
-            {/* Search form */}
-            {/* <div className="relative">
-              <Input
-                className="peer h-8 ps-8 pe-2"
-                placeholder="Search..."
-                type="search"
-              />
-              <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 peer-disabled:opacity-50">
-                <SearchIcon size={16} />
-              </div>
-            </div> */}
           </div>
         </div>
         {/* Right side */}
