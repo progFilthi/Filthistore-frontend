@@ -21,32 +21,6 @@ import {
   type FileWithPreview,
 } from "@/hooks/use-file-upload";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
-
-// Create some dummy initial files
-// const initialFiles = [
-//   {
-//     name: "intro.zip",
-//     size: 252873,
-//     type: "application/zip",
-//     url: "https://example.com/intro.zip",
-//     id: "intro.zip-1744638436563-8u5xuls",
-//   },
-//   {
-//     name: "image-01.jpg",
-//     size: 1528737,
-//     type: "image/jpeg",
-//     url: "https://picsum.photos/1000/800?grayscale&random=1",
-//     id: "image-01-123456789",
-//   },
-//   {
-//     name: "audio.mp3",
-//     size: 1528737,
-//     type: "audio/mpeg",
-//     url: "https://example.com/audio.mp3",
-//     id: "audio-123456789",
-//   },
-// ];
 
 const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
   const fileType = file.file instanceof File ? file.file.type : file.file.type;
@@ -98,42 +72,6 @@ const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
   }
 
   return <FileIcon className="size-5 opacity-60" />;
-};
-
-const getFilePreview = (file: {
-  file: File | { type: string; name: string; url?: string };
-}) => {
-  const fileType = file.file instanceof File ? file.file.type : file.file.type;
-  const fileName = file.file instanceof File ? file.file.name : file.file.name;
-
-  const renderImage = (src: string) => (
-    <Image
-      src={src}
-      alt={fileName}
-      width={32}
-      height={32}
-      className="size-full rounded-t-[inherit] object-cover"
-    />
-  );
-
-  return (
-    <div className="bg-accent flex aspect-square items-center justify-center overflow-hidden rounded-t-[inherit]">
-      {fileType.startsWith("image/") ? (
-        file.file instanceof File ? (
-          (() => {
-            const previewUrl = URL.createObjectURL(file.file);
-            return renderImage(previewUrl);
-          })()
-        ) : file.file.url ? (
-          renderImage(file.file.url)
-        ) : (
-          <ImageIcon className="size-5 opacity-60" />
-        )
-      ) : (
-        getFileIcon(file)
-      )}
-    </div>
-  );
 };
 
 // Type for tracking upload progress
