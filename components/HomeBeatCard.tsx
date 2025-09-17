@@ -92,7 +92,7 @@ const BeatData: BeatProps[] = [
   },
 ];
 
-export default function BeatCard() {
+export default function HomeBeatCard() {
   const [selectedBeat, setSelectedBeat] = useState<BeatProps | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [hoveredBeatId, setHoveredBeatId] = useState<number | null>(null);
@@ -117,7 +117,7 @@ export default function BeatCard() {
 
   return (
     <>
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-8 gap-8 max-w-7xl mx-auto my-32">
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-8 gap-8 max-w-7xl mx-auto">
         {BeatData.map((beat) => (
           <Card
             key={beat.id}

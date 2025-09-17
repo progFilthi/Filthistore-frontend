@@ -1,17 +1,15 @@
-import React from "react";
-import BeatCard from "../BeatCard";
 import { Input } from "../ui/input";
 import { SearchIcon } from "lucide-react";
 
 export default function BeatsSection() {
   return (
-    <section className="my-24">
+    <section className="mt-24 mb-8">
       <h1 className="text-center text-3xl">Beats</h1>
-      <h2 className="text-center text-sm px-4 md:text-lg md:px-2 text-muted-foreground my-2">
+      <h2 className="text-center text-sm px-4 md:text-lg md:px-2 text-muted-foreground">
         Browse through your favorite beats & gain inspiration!
       </h2>
       {/* Search form */}
-      <div className="max-w-3xl px-4 mx-auto mt-4 relative">
+      <div className="max-w-3xl px-4 mx-auto mt-8 relative">
         <Input
           className="peer h-12 ps-8 pe-2"
           placeholder="Search..."
@@ -21,10 +19,6 @@ export default function BeatsSection() {
           <SearchIcon size={16} />
         </div>
       </div>
-
-      <section>
-        <BeatCard />
-      </section>
     </section>
   );
 }

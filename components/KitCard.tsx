@@ -92,7 +92,7 @@ const BeatData: BeatProps[] = [
   },
 ];
 
-export default function BeatCard() {
+export default function KitCard() {
   const [selectedBeat, setSelectedBeat] = useState<BeatProps | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [hoveredBeatId, setHoveredBeatId] = useState<number | null>(null);

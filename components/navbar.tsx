@@ -26,9 +26,7 @@ import { toast } from "sonner";
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/beats", label: "Beats" },
-  { href: "/drum-kits", label: "Drum kits" },
-  { href: "/loop-kits", label: "Loop kits" },
-  { href: "/deals", label: "Deals" },
+  { href: "/kits", label: "Drum & loop kits" },
 ];
 
 export default function Navbar() {
