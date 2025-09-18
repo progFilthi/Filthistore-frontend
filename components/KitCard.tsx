@@ -1,109 +1,53 @@
-"use client";
-
-import { useState, useRef } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Play, Pause } from "lucide-react";
+import Link from "next/link";
 
 interface KitsProps {
-  id: number;
-  image: string;
+  id: string;
+  imageUrl: string;
   title: string;
   description: string;
   price: number;
-  audio?: string; // path to audio file
+  audioUrl: string;
 }
 
-const KitsData: KitsProps[] = [
-  {
-    id: 1,
-    image: "/drum-kit.jpg",
-    title: "Loop Hole",
-    description: "High quality dark sounds for your dark beats.",
-    price: 30,
-    audio: "/Blictionary 147 gm @prodbyfilthi.mp3",
-  },
-  {
-    id: 2,
-    image: "/drum-kit.jpg",
-    title: "Streets Chosen",
-    description: "Premium no recycled sounds just hits.",
-    price: 70,
-    audio: "/Blictionary 147 gm @prodbyfilthi.mp3",
-  },
-  {
-    id: 3,
-    image: "/drum-kit.jpg",
-    title: "Loop Hole Vol.2",
-    description: "High quality dark sounds for your dark beats.",
-    price: 30,
-    audio: "/Blictionary 147 gm @prodbyfilthi.mp3",
-  },
-  {
-    id: 4,
-    image: "/drum-kit.jpg",
-    title: "Streets Chosen Vol.2",
-    description: "Premium no recycled sounds just hits.",
-    price: 70,
-    audio: "/Blictionary 147 gm @prodbyfilthi.mp3",
-  },
-];
+interface KitsApiResponse {
+  kits: KitsProps[];
+}
 
-export default function KitCard() {
-  const [hoveredKitAudioId, setHoveredKitAudioId] = useState<number | null>(
-    null
-  );
-  const [playingKitAudioId, setPlayingKitAudioId] = useState<number | null>(
-    null
-  );
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+export default async function KitCard() {
+  const res = await fetch(`http://localhost:8000/api/kits`, {
+    cache: "no-store",
+  });
+  const data: KitsApiResponse = await res.json();
+  const KitsData = data.kits || [];
 
-  const handlePlayPause = (kitAudio: KitsProps) => {
-    if (!audioRef.current) return;
-    if (playingKitAudioId === kitAudio.id) {
-      audioRef.current.pause();
-      setPlayingKitAudioId(null);
-    } else {
-      audioRef.current.src = kitAudio.audio || "";
-      audioRef.current.play();
-      setPlayingKitAudioId(kitAudio.id);
-    }
-  };
+  if (KitsData.length === 0) {
+    return (
+      <div className="flex flex-col min-h-screen space-y-8 items-center justify-center">
+        <p className="text-muted-foreground">No kits yet, please upload ...</p>
+        <Link href={"/dashboard/upload"}>
+          <Button size={"sm"}>Upload a kit here</Button>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-8 gap-8 max-w-7xl mx-auto my-32">
         {KitsData.map((kit) => (
-          <Card
-            key={kit.id}
-            onMouseEnter={() => setHoveredKitAudioId(kit.id)}
-            onMouseLeave={() => setHoveredKitAudioId(null)}
-          >
+          <Card key={kit.id}>
             <CardContent className="flex flex-col space-y-1 relative">
               <div className="relative h-48 w-full rounded-md overflow-hidden">
                 <Image
-                  src={kit.image}
+                  src={kit.imageUrl}
                   alt="kit-image"
                   fill
                   className="object-cover"
                 />
-
-                {/* Play/Pause icons */}
-                {hoveredKitAudioId === kit.id && (
-                  <button
-                    onClick={() => handlePlayPause(kit)}
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white p-2 rounded-full bg-black/30 hover:bg-black/50"
-                  >
-                    {playingKitAudioId === kit.id ? (
-                      <Pause size={32} />
-                    ) : (
-                      <Play size={32} />
-                    )}
-                  </button>
-                )}
               </div>
-
               <div className="space-y-1 mt-2">
                 <div className="flex justify-between">
                   <h1 className="font-bold">{kit.title}</h1>
@@ -121,7 +65,6 @@ export default function KitCard() {
           </Card>
         ))}
       </div>
-      <audio ref={audioRef} onEnded={() => setPlayingKitAudioId(null)} />
     </>
   );
 }
