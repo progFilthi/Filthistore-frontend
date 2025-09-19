@@ -2,6 +2,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { baseUrl } from "@/lib/base-url";
 
 interface KitsProps {
   id: string;
@@ -17,7 +18,7 @@ interface KitsApiResponse {
 }
 
 export default async function KitCard() {
-  const res = await fetch(`http://localhost:8000/api/kits`, {
+  const res = await fetch(`${baseUrl}/api/kits`, {
     cache: "no-store",
   });
   const data: KitsApiResponse = await res.json();
@@ -53,7 +54,7 @@ export default async function KitCard() {
                   <h1 className="font-bold">{kit.title}</h1>
                   <h1 className="font-bold">
                     <span>$</span>
-                    {kit.price}
+                    {(kit.price / 100).toFixed(2)}
                   </h1>
                 </div>
                 <p className="text-muted-foreground">{kit.description}</p>

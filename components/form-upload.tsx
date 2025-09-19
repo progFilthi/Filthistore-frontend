@@ -1,24 +1,152 @@
-import React from "react";
-import TitleUpload from "./input-upload-title";
-import UploadButton from "./upload-btn";
-import PriceUpload from "./input-upload-price";
-import BpmUpload from "./input-upload-bpm";
-import KeyUpload from "./input-upload-key";
+"use client";
+
+import { useState } from "react";
+import axios from "axios";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
+import { baseUrl } from "@/lib/base-url";
 
 export default function FormUpload() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+
+  // Helper to get presigned URL and upload file
+  const uploadFile = async (file: File) => {
+    const { data } = await axios.post(`${baseUrl}/api/uploads/presign`, {
+      filename: file.name,
+      contentType: file.type,
+    });
+
+    await axios.put(data.url, file, {
+      headers: { "Content-Type": file.type },
+      onUploadProgress: (e) => {
+        if (e.total) {
+          console.log(
+            `Upload progress: ${Math.round((e.loaded / e.total) * 100)}%`
+          );
+        }
+      },
+    });
+
+    return data.key; // Return S3 key to store in DB
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!audioFile || !imageFile) {
+      toast.error("Please select both audio and image files.");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      // Upload audio and image files
+      const [audioKey, imageKey] = await Promise.all([
+        uploadFile(audioFile),
+        uploadFile(imageFile),
+      ]);
+
+      //changing price to cents
+      const priceInCents = Math.round(parseFloat(price) * 100);
+
+      // Call backend to create kit
+      await axios.post(`${baseUrl}/api/kits`, {
+        title,
+        description,
+        price: priceInCents,
+        audioKey,
+        imageKey,
+      });
+
+      toast.success("Kit uploaded successfully!");
+      setTitle("");
+      setDescription("");
+      setPrice("");
+      setAudioFile(null);
+      setImageFile(null);
+    } catch (err) {
+      console.error(err);
+      toast.error("Upload failed.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
-    // className="flex gap-8"
-    <form className="flex items-start flex-col my-16 space-y-8 w-full">
-      <h1 className="text-lg">Fill up the beat metadata below!</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full gap-8">
-        <TitleUpload />
-        <BpmUpload />
-        <KeyUpload />
-        <PriceUpload />
-      </div>
-      <div className="flex justify-center w-full mt-8">
-        <UploadButton />
-      </div>
-    </form>
+    <Card className="w-full max-w-lg mx-auto my-16">
+      <CardHeader>
+        <CardTitle>Upload Drum Kit</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
+          <div>
+            <Label htmlFor="title">Title</Label>
+            <Input
+              id="title"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="price">Price</Label>
+            <Input
+              id="price"
+              type="number"
+              step="0.01"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="audio">Audio File</Label>
+            <Input
+              id="audio"
+              type="file"
+              accept="audio/*"
+              onChange={(e) => setAudioFile(e.target.files?.[0] || null)}
+              required
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="image">Image File</Label>
+            <Input
+              id="image"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+              required
+            />
+          </div>
+
+          <Button type="submit" disabled={uploading}>
+            {uploading ? "Uploading..." : "Upload Kit"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 }
