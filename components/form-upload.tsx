@@ -83,11 +83,11 @@ export default function FormUpload() {
   return (
     <Card className="w-full max-w-lg mx-auto my-16">
       <CardHeader>
-        <CardTitle>Upload Drum Kit</CardTitle>
+        <CardTitle className="text-xl font-bold">Upload A Drum Kit</CardTitle>
       </CardHeader>
       <CardContent>
         <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="title">Title</Label>
             <Input
               id="title"
@@ -98,7 +98,7 @@ export default function FormUpload() {
             />
           </div>
 
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="description">Description</Label>
             <Textarea
               id="description"
@@ -108,7 +108,7 @@ export default function FormUpload() {
             />
           </div>
 
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="price">Price</Label>
             <Input
               id="price"
@@ -120,7 +120,7 @@ export default function FormUpload() {
             />
           </div>
 
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="audio">Audio File</Label>
             <Input
               id="audio"
@@ -131,7 +131,7 @@ export default function FormUpload() {
             />
           </div>
 
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="image">Image File</Label>
             <Input
               id="image"

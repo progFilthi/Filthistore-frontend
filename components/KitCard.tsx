@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { baseUrl } from "@/lib/base-url";
+import ShareEllipsis from "./share-ellipsis";
 
 interface KitsProps {
   id: string;
@@ -48,6 +49,9 @@ export default async function KitCard() {
                   fill
                   className="object-cover"
                 />
+                <span className="absolute top-2 left-1">
+                  <ShareEllipsis />
+                </span>
               </div>
               <div className="space-y-1 mt-2">
                 <div className="flex justify-between">
@@ -57,7 +61,9 @@ export default async function KitCard() {
                     {(kit.price / 100).toFixed(2)}
                   </h1>
                 </div>
-                <p className="text-muted-foreground">{kit.description}</p>
+                <p className="text-muted-foreground text-sm">
+                  {kit.description}
+                </p>
               </div>
             </CardContent>
             <CardFooter className="gap-1 w-full">
