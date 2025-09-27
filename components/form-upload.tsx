@@ -20,7 +20,7 @@ export default function FormUpload() {
 
   // Helper to get presigned URL and upload file
   const uploadFile = async (file: File) => {
-    const { data } = await axios.post(`${baseUrl}/api/uploads/presign`, {
+    const { data } = await axios.post(`${baseUrl}/uploads/presign`, {
       filename: file.name,
       contentType: file.type,
     });
@@ -58,7 +58,7 @@ export default function FormUpload() {
       const priceInCents = Math.round(parseFloat(price) * 100);
 
       // Call backend to create kit
-      await axios.post(`${baseUrl}/api/kits`, {
+      await axios.post(`${baseUrl}/kits`, {
         title,
         description,
         price: priceInCents,
