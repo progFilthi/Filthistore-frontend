@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { baseUrl } from "@/lib/base-url";
 import KitEllipsis from "./kit-ellipsis";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 export interface KitsProps {
   id: string;
@@ -49,6 +51,32 @@ export default function KitCard() {
     );
   }
 
+  //creates a payment checkout page for dodo payments
+  const handlePayments = async () => {
+    const { data: checkout } = await authClient.dodopayments.checkout({
+      slug: "premium-plan",
+      customer: {
+        email: "customer@example.com",
+        name: "John Doe",
+      },
+      billing: {
+        city: "San Francisco",
+        country: "US",
+        state: "CA",
+        street: "123 Market St",
+        zipcode: "94103",
+      },
+      referenceId: "order_123",
+    });
+
+    if (!checkout) {
+      toast.error("Error in check out page");
+    } else {
+      window.open(checkout.url, "_blank");
+      // window.location.href = checkout.url;
+    }
+  };
+
   return (
     <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-8 gap-8 max-w-7xl mx-auto my-32">
       {kits.map((kit) => (
@@ -77,7 +105,9 @@ export default function KitCard() {
             </div>
           </CardContent>
           <CardFooter className="gap-1 w-full">
-            <Button className="w-full">Add to Cart</Button>
+            <Button onClick={handlePayments} className="w-full">
+              Add to Cart
+            </Button>
           </CardFooter>
         </Card>
       ))}
