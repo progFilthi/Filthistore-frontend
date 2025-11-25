@@ -106,7 +106,7 @@ export default function KitCard() {
           </CardContent>
           <CardFooter className="gap-1 w-full">
             <Button onClick={handlePayments} className="w-full">
-              Add to Cart
+              Buy Now
             </Button>
           </CardFooter>
         </Card>
